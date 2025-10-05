@@ -4,10 +4,6 @@ const env = require('../config/env.config');
 test('Facultad - Emitir Resolución de Aprobación de Tesis', async ({ page }) => {
   test.setTimeout(120000);
   
-  // 🖥️ Configurar resolución de pantalla más grande (1920x1080 Full HD)
-  await page.setViewportSize({ width: 1920, height: 1080 });
-  console.log('🖥️ Resolución configurada: 1920x1080 (Full HD)');
-  
   console.log('🌐 Navegando a página de login...');
   await page.goto(`${env.BASE_URL}/login`);
   await page.waitForLoadState('networkidle');
@@ -40,8 +36,8 @@ test('Facultad - Emitir Resolución de Aprobación de Tesis', async ({ page }) =
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -60,7 +56,7 @@ test('Facultad - Emitir Resolución de Aprobación de Tesis', async ({ page }) =
   
   // 🔥 IMPORTANTE: Dar tiempo a que los datos del test anterior se reflejen en la BD
   console.log('⏳ Esperando a que los datos del proceso anterior se reflejen en la base de datos...');
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(2000);
   
   // ========== PASO 2: NAVEGAR A EMITIR RESOLUCIÓN DE APROBACIÓN (SI ES NECESARIO) ==========
   console.log('📋 Verificando si necesitamos navegar a Emitir Resolución de Aprobación...');
@@ -76,16 +72,16 @@ test('Facultad - Emitir Resolución de Aprobación de Tesis', async ({ page }) =
       console.log('✅ Botón de navegación encontrado, haciendo clic...');
       await navegarAprobacionBtn.click();
       await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(2000); // Esperar que cargue la tabla
+      await page.waitForTimeout(1000); // Esperar que cargue la tabla
     } else {
       console.log('⚠️ Botón no visible, navegando directamente por URL...');
       await page.goto(`${env.BASE_URL}/facultad/emitir-resolucion-aprobacion`);
       await page.waitForLoadState('networkidle');
-      await page.waitForTimeout(2000); // Esperar que cargue la tabla
+      await page.waitForTimeout(1000); // Esperar que cargue la tabla
     }
   } else {
     console.log('✅ Ya estamos en la página de emisión de resolución de aprobación');
-    await page.waitForTimeout(2000); // Esperar que cargue la tabla
+    await page.waitForTimeout(1000); // Esperar que cargue la tabla
   }
   
   // ========== PASO 3: EMITIR RESOLUCIÓN DE APROBACIÓN ==========
@@ -107,7 +103,7 @@ test('Facultad - Emitir Resolución de Aprobación de Tesis', async ({ page }) =
     
     console.log('📝 Haciendo click en "Emitir Resolución de aprobación"...');
     await emitirResolucionBtn.click();
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
   } else {
     console.log('✅ Ya estamos en el modal de emisión de resolución');
   }
@@ -117,14 +113,13 @@ test('Facultad - Emitir Resolución de Aprobación de Tesis', async ({ page }) =
   const aprobarBtn = page.getByRole('button', { name: 'Aprobar' });
   await aprobarBtn.waitFor({ state: 'visible', timeout: 5000 });
   await aprobarBtn.click();
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // ========== PASO 5: LLENAR NÚMERO DE RESOLUCIÓN ==========
   console.log('📄 Llenando número de resolución...');
   const resolucionInput = page.getByRole('textbox', { name: 'Ej:' });
   await resolucionInput.waitFor({ state: 'visible', timeout: 5000 });
   await resolucionInput.fill(env.RESOLUCION_APROBACION);
-  await page.waitForTimeout(300);
   
   // Tomar screenshot antes de tramitar
   console.log('📸 Tomando screenshot antes de tramitar resolución de aprobación...');
@@ -138,17 +133,17 @@ test('Facultad - Emitir Resolución de Aprobación de Tesis', async ({ page }) =
   
   // Confirmar tramitación
   console.log('✅ Confirmando tramitación de resolución...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Sí, Tramitar' }).click();
   
   // Primera confirmación - "Continuar"
   console.log('✅ Aceptando primera confirmación...');
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Continuar' }).click();
   
   // Confirmación final - "Perfecto"
   console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   console.log('🎉 ¡TEST COMPLETADO EXITOSAMENTE!');

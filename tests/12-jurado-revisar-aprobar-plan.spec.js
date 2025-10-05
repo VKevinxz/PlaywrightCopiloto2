@@ -36,8 +36,8 @@ test('Revisor (Jurado Objetante) - Revisar y Aprobar Plan de Tesis', async ({ pa
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -107,9 +107,9 @@ test('Revisor (Jurado Objetante) - Revisar y Aprobar Plan de Tesis', async ({ pa
       await page.getByRole('button', { name: 'Enviar Postulación' }).click();
       
       console.log('✅ Confirmando envío de postulación...');
-      await page.waitForTimeout(500);
+      await page.waitForTimeout(300);
       await page.getByRole('button', { name: 'Sí, enviar postulación' }).click();
-      await page.waitForTimeout(1000);
+      await page.waitForTimeout(500);
     }
   }
   
@@ -127,18 +127,17 @@ test('Revisor (Jurado Objetante) - Revisar y Aprobar Plan de Tesis', async ({ pa
     // Subir archivo directamente (sin hacer click en el botón)
     await firmaInput.setInputFiles(env.FIRMA_JURADO);
     console.log('✅ Firma cargada correctamente');
-    await page.waitForTimeout(1500); // Esperar a que se procese la imagen
+    await page.waitForTimeout(800); // Esperar a que se procese la imagen
     
     // Completar perfil
     console.log('💾 Completando perfil inicial del jurado...');
     await page.getByRole('button', { name: 'Completar Perfil Inicial' }).click();
     
     console.log('✅ Confirmando datos del perfil...');
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     await page.getByRole('button', { name: 'Sí, continuar' }).click();
     
     console.log('✅ Aceptando confirmación de perfil completado...');
-    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Entendido' }).click();
     
     console.log('⏳ Esperando redirección post-perfil del jurado objetante...');
@@ -164,7 +163,7 @@ test('Revisor (Jurado Objetante) - Revisar y Aprobar Plan de Tesis', async ({ pa
   
   console.log('📝 Haciendo click en "Revisar Plan de Tesis"...');
   await revisarPlanBtn.click();
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   
   // ========== PASO 6: APROBAR PLAN DE TESIS (DAR CONFORMIDAD) ==========
   console.log('✅ Aprobando plan de tesis (dar conformidad)...');
@@ -179,17 +178,16 @@ test('Revisor (Jurado Objetante) - Revisar y Aprobar Plan de Tesis', async ({ pa
   
   // Confirmar aprobación (dar conformidad)
   console.log('✅ Confirmando aprobación del plan (dar conformidad)...');
-  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Sí, Dar Conformidad' }).click();
   
   // Primera confirmación
   console.log('✅ Aceptando primera confirmación...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   // Segunda confirmación (si aparece)
-  console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(500);
+  console.log('✅ Verificando si hay confirmación adicional...');
+  await page.waitForTimeout(300);
   
   // Verificar si hay un segundo botón "Perfecto"
   const segundoPerfecto = page.getByRole('button', { name: 'Perfecto' });

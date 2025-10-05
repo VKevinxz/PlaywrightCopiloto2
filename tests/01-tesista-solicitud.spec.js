@@ -46,8 +46,8 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal si no hay más redirecciones
@@ -79,8 +79,7 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
     
     console.log('⏳ Esperando redirección post-perfil...');
     await page.waitForURL(/localhost:5173\/(?!perfil)/, { timeout: 10000 });
-    await page.waitForLoadState('networkidle');
-    console.log(`📍 Redirigido a: ${page.url()}`);
+    console.log(`📍 Redirigido a: ${page.url()}`);  
   }
   
   // ========== PASO 2: INICIAR TRÁMITE ==========
@@ -104,10 +103,6 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
     console.log('✅ Confirmando alerta de sistema SAUH...');
     await page.getByRole('button', { name: 'Entendido, continuar' }).click();
 
-    // Esperar confirmación de trámite iniciado
-    console.log('⏳ Esperando confirmación de trámite iniciado...');
-    await page.waitForTimeout(1000);
-
     // Manejar el segundo SweetAlert (éxito)
     console.log('✅ Confirmando trámite iniciado...');
     await page.getByRole('button', { name: 'Continuar' }).click();
@@ -125,7 +120,7 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
   
   // 🔥 ESPERAR A QUE CARGUEN LOS DATOS (selectores habilitados)
   console.log('⏳ Esperando a que carguen las opciones de los selectores...');
-  await page.waitForTimeout(2000); // Dar tiempo para que los hooks carguen datos
+  await page.waitForTimeout(1000); // Dar tiempo para que los hooks carguen datos
   
   // Llenar título de tesis
   console.log('📄 Llenando título de tesis...');
@@ -142,12 +137,12 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
   let tipoDisabled = await tipoSelect.getAttribute('disabled');
   if (tipoDisabled !== null) {
     console.log('⚠️ Selector de tipo aún deshabilitado, esperando...');
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(1500);
   }
   
   console.log('🔬 Seleccionando tipo de investigación "CUALITATIVA"...');
   await tipoSelect.selectOption({ label: 'CUALITATIVA' });
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // 🔥 Seleccionar asesor técnico con verificación
   console.log('👨‍🏫 Esperando que asesor técnico esté habilitado...');
@@ -157,12 +152,12 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
   let asesorDisabled = await asesorSelect.getAttribute('disabled');
   if (asesorDisabled !== null) {
     console.log('⚠️ Selector de asesor aún deshabilitado, esperando...');
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(1500);
   }
   
   console.log('👨‍🏫 Seleccionando asesor técnico "KEVIN VIZC BARR"...');
   await asesorSelect.selectOption({ label: 'KEVIN VIZC BARR' });
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // 🔥 Seleccionar línea de investigación con verificación
   console.log('📊 Esperando que línea de investigación esté habilitada...');
@@ -172,12 +167,12 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
   let lineaDisabled = await lineaSelect.getAttribute('disabled');
   if (lineaDisabled !== null) {
     console.log('⚠️ Selector de línea aún deshabilitado, esperando...');
-    await page.waitForTimeout(3000);
+    await page.waitForTimeout(1500);
   }
   
   console.log('📊 Seleccionando línea de investigación "Tecnologías de la información y comunicación"...');
   await lineaSelect.selectOption({ label: 'Tecnologías de la información y comunicación' });
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // 🔥 TOMAR SCREENSHOT ANTES DE ENVIAR
   console.log('📸 Tomando screenshot del formulario completado...');
@@ -200,17 +195,12 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
   await enviarBtn.click();
   
   // Confirmar en el SweetAlert
-  console.log('✅ Esperando modal de confirmación...');
-  await page.waitForTimeout(1000);
-  
   console.log('✅ Confirmando envío de solicitud...');
   await page.getByRole('button', { name: 'Enviar solicitud' }).click();
   
   // Aceptar confirmación final
-  console.log('✅ Esperando confirmación final...');
-  await page.waitForTimeout(1000);
-  
   console.log('✅ Aceptando confirmación final...');
+  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   console.log('🎉 ¡SOLICITUD ENVIADA EXITOSAMENTE!');
@@ -221,7 +211,7 @@ test('Tesista - Login Google y Solicitud de Asesoría', async ({ page }) => {
   
   // Hacer click en el botón de perfil/menú (el tercer botón sin texto)
   await page.getByRole('button').filter({ hasText: /^$/ }).nth(2).click();
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // Hacer click en "Cerrar sesión"
   await page.getByRole('button', { name: 'Cerrar sesión' }).click();

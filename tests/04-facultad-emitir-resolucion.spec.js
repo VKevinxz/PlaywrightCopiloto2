@@ -36,8 +36,8 @@ test('Facultad - Emitir Resolución de Asignación de Asesores', async ({ page }
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -67,20 +67,19 @@ test('Facultad - Emitir Resolución de Asignación de Asesores', async ({ page }
     await firmaSecretarioInput.waitFor({ state: 'attached', timeout: 5000 });
     await firmaSecretarioInput.setInputFiles(env.FIRMA_SECRETARIO);
     console.log('✅ Firma del Secretario cargada');
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(800);
     
     // Guardar firma del Secretario
     console.log('💾 Guardando firma del Secretario...');
     await page.getByRole('button', { name: 'Guardar Firma del Secretario' }).click();
     
     console.log('✅ Confirmando firma del Secretario...');
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     await page.getByRole('button', { name: 'Sí, continuar' }).click();
     
     console.log('✅ Aceptando confirmación...');
-    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Entendido' }).click();
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(500);
     
     // PASO 2.2: Subir firma del Decano
     console.log('🖊️ PASO 2/2: Subiendo firma del Decano...');
@@ -91,23 +90,21 @@ test('Facultad - Emitir Resolución de Asignación de Asesores', async ({ page }
     await firmaDecanoInput.waitFor({ state: 'attached', timeout: 5000 });
     await firmaDecanoInput.setInputFiles(env.FIRMA_DECANO);
     console.log('✅ Firma del Decano cargada');
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(800);
     
     // Completar perfil con firma del Decano
     console.log('💾 Completando perfil con firma del Decano...');
     await page.getByRole('button', { name: 'Completar Perfil y Continuar' }).click();
     
     console.log('✅ Confirmando firma del Decano...');
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     await page.getByRole('button', { name: 'Sí, continuar' }).click();
     
     console.log('✅ Aceptando confirmación final del perfil...');
-    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Entendido' }).click();
     
     console.log('⏳ Esperando redirección post-perfil de Facultad...');
     await page.waitForURL(/localhost:5173\/(?!perfil)/, { timeout: 10000 });
-    await page.waitForLoadState('networkidle');
     console.log(`📍 Redirigido a: ${page.url()}`);
   }
   
@@ -121,14 +118,14 @@ test('Facultad - Emitir Resolución de Asignación de Asesores', async ({ page }
   
   console.log('📝 Haciendo click en "Tramitar"...');
   await tramitarBtn.click();
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   
   // Llenar número de resolución
   console.log('📄 Llenando número de resolución...');
   const resolucionInput = page.getByRole('textbox', { name: 'Ej:' });
   await resolucionInput.waitFor({ state: 'visible', timeout: 5000 });
   await resolucionInput.fill(env.RESOLUCION_ASESORES);
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // Tomar screenshot antes de tramitar
   console.log('📸 Tomando screenshot antes de tramitar...');
@@ -142,12 +139,11 @@ test('Facultad - Emitir Resolución de Asignación de Asesores', async ({ page }
   
   // Confirmar tramitación
   console.log('✅ Confirmando tramitación de resolución...');
-  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Sí, Tramitar' }).click();
   
   // Aceptar confirmación final
   console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   console.log('🎉 ¡TEST COMPLETADO EXITOSAMENTE!');

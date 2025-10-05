@@ -36,8 +36,8 @@ test('Revisor (Asesor Técnico) - Revisar y Aprobar Plan de Tesis', async ({ pag
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -68,7 +68,7 @@ test('Revisor (Asesor Técnico) - Revisar y Aprobar Plan de Tesis', async ({ pag
   
   console.log('📝 Haciendo click en "Revisar Plan de Tesis"...');
   await revisarPlanBtn.click();
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   
   // ========== PASO 3: APROBAR PLAN DE TESIS ==========
   console.log('✅ Aprobando plan de tesis...');
@@ -83,17 +83,16 @@ test('Revisor (Asesor Técnico) - Revisar y Aprobar Plan de Tesis', async ({ pag
   
   // Confirmar aprobación
   console.log('✅ Confirmando aprobación del plan...');
-  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Sí, Aprobar' }).click();
   
   // Primera confirmación
   console.log('✅ Aceptando primera confirmación...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   // Segunda confirmación (si aparece)
-  console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(500);
+  console.log('✅ Verificando si hay confirmación adicional...');
+  await page.waitForTimeout(300);
   
   // Verificar si hay un segundo botón "Perfecto"
   const segundoPerfecto = page.getByRole('button', { name: 'Perfecto' });

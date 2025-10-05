@@ -36,8 +36,8 @@ test('Tesista - Solicitar Jurado Objetante', async ({ page }) => {
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -71,12 +71,11 @@ test('Tesista - Solicitar Jurado Objetante', async ({ page }) => {
   
   // Confirmar solicitud de jurado
   console.log('✅ Confirmando solicitud de jurado objetante...');
-  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Sí, Solicitar' }).click();
   
   // Aceptar confirmación final
   console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   console.log('🎉 ¡TEST COMPLETADO EXITOSAMENTE!');

@@ -36,8 +36,8 @@ test('PAISI - Designar Asesor Metodológico', async ({ page }) => {
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -68,23 +68,21 @@ test('PAISI - Designar Asesor Metodológico', async ({ page }) => {
     // Subir archivo directamente
     await firmaPaisiInput.setInputFiles(env.FIRMA_PAISI);
     console.log('✅ Firma de PAISI cargada correctamente');
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(800);
     
     // Completar perfil
     console.log('💾 Completando perfil de PAISI...');
     await page.getByRole('button', { name: 'Completar Perfil Inicial' }).click();
     
     console.log('✅ Confirmando datos del perfil...');
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(300);
     await page.getByRole('button', { name: 'Sí, continuar' }).click();
     
     console.log('✅ Aceptando confirmación de perfil completado...');
-    await page.waitForTimeout(500);
     await page.getByRole('button', { name: 'Entendido' }).click();
     
     console.log('⏳ Esperando redirección post-perfil de PAISI...');
     await page.waitForURL(/localhost:5173\/(?!perfil)/, { timeout: 10000 });
-    await page.waitForLoadState('networkidle');
     console.log(`📍 Redirigido a: ${page.url()}`);
   }
   
@@ -102,19 +100,19 @@ test('PAISI - Designar Asesor Metodológico', async ({ page }) => {
   await asesorMetodologicoSelect.waitFor({ state: 'visible', timeout: 5000 });
   
   // Esperar a que el select esté habilitado
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   
   // Seleccionar por label (texto visible)
   await asesorMetodologicoSelect.selectOption({ label: 'JOSE LEONARDO TOL CER' });
   console.log('✅ Asesor metodológico seleccionado');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // Llenar número de expediente
   console.log('📄 Llenando número de expediente...');
   const expedienteInput = page.getByRole('textbox', { name: 'Digite número de expediente' });
   await expedienteInput.waitFor({ state: 'visible', timeout: 5000 });
   await expedienteInput.fill(env.EXPEDIENTE_ASESORES);
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // Tomar screenshot antes de designar
   console.log('📸 Tomando screenshot antes de designar...');
@@ -128,12 +126,11 @@ test('PAISI - Designar Asesor Metodológico', async ({ page }) => {
   
   // Confirmar designación
   console.log('✅ Confirmando designación...');
-  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Sí, Designar' }).click();
   
   // Aceptar confirmación final
   console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   console.log('🎉 ¡TEST COMPLETADO EXITOSAMENTE!');

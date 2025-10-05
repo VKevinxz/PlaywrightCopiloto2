@@ -36,8 +36,8 @@ test('Facultad - Emitir Resolución de Designación de Jurado Objetante', async 
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -66,10 +66,10 @@ test('Facultad - Emitir Resolución de Designación de Jurado Objetante', async 
     console.log('⏳ Esperando navegación...');
     await page.waitForURL(/emitir-resolucion-jurado/, { timeout: 10000 });
     await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000); // Esperar que cargue la tabla
+    await page.waitForTimeout(1000); // Esperar que cargue la tabla
   } else {
     console.log('✅ Ya estamos en la página de emisión de resolución de jurado');
-    await page.waitForTimeout(2000); // Esperar que cargue la tabla
+    await page.waitForTimeout(1000); // Esperar que cargue la tabla
   }
   
   // ========== PASO 3: TRAMITAR RESOLUCIÓN DESDE LA TABLA ==========
@@ -86,7 +86,7 @@ test('Facultad - Emitir Resolución de Designación de Jurado Objetante', async 
   
   console.log('📝 Haciendo click en "Tramitar"...');
   await tramitarBtn.click();
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   
   // ========== PASO 4: LLENAR NÚMERO DE RESOLUCIÓN EN EL MODAL ==========
   console.log('📄 Esperando que aparezca el modal...');
@@ -96,7 +96,7 @@ test('Facultad - Emitir Resolución de Designación de Jurado Objetante', async 
   const resolucionInput = page.getByRole('textbox', { name: 'Ej:' });
   await resolucionInput.waitFor({ state: 'visible', timeout: 5000 });
   await resolucionInput.fill(env.RESOLUCION_JURADO);
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // Tomar screenshot antes de tramitar
   console.log('📸 Tomando screenshot antes de tramitar resolución de jurado...');
@@ -110,17 +110,16 @@ test('Facultad - Emitir Resolución de Designación de Jurado Objetante', async 
   
   // Confirmar tramitación
   console.log('✅ Confirmando tramitación de resolución...');
-  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Sí, Tramitar' }).click();
   
   // Primera confirmación - "Continuar"
   console.log('✅ Aceptando primera confirmación...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Continuar' }).click();
   
   // Confirmación final - "Perfecto"
   console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   console.log('🎉 ¡TEST COMPLETADO EXITOSAMENTE!');

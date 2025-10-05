@@ -36,8 +36,8 @@ test('PAISI - Solicitar Resolución de Aprobación de Tesis', async ({ page }) =
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -70,14 +70,10 @@ test('PAISI - Solicitar Resolución de Aprobación de Tesis', async ({ page }) =
   await solicitarResolucionBtn.click();
   
   // ========== PASO 3: LLENAR NÚMERO DE EXPEDIENTE ==========
-  console.log('📄 Esperando que aparezca el modal...');
-  await page.waitForTimeout(500);
-  
   console.log('📄 Llenando número de expediente...');
   const expedienteInput = page.getByRole('textbox', { name: 'Digite número de expediente' });
   await expedienteInput.waitFor({ state: 'visible', timeout: 5000 });
   await expedienteInput.fill(env.EXPEDIENTE_APROBACION);
-  await page.waitForTimeout(300);
   
   // ========== PASO 4: APROBAR SOLICITUD ==========
   console.log('✅ Haciendo click en "Aprobar"...');
@@ -87,12 +83,12 @@ test('PAISI - Solicitar Resolución de Aprobación de Tesis', async ({ page }) =
   
   // Confirmar aprobación
   console.log('✅ Confirmando aprobación...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Sí, Aprobar' }).click();
   
   // Aceptar confirmación final
   console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   console.log('🎉 ¡TEST COMPLETADO EXITOSAMENTE!');

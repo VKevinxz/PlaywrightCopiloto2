@@ -36,8 +36,8 @@ test('PAISI - Designar Jurado Objetante', async ({ page }) => {
     
     try {
       await Promise.race([
-        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 3000 }),
-        page.waitForTimeout(3000)
+        page.waitForURL(url => url.toString() !== previousUrl, { timeout: 2000 }),
+        page.waitForTimeout(2000)
       ]);
     } catch (e) {
       // Timeout es normal
@@ -64,7 +64,7 @@ test('PAISI - Designar Jurado Objetante', async ({ page }) => {
   
   console.log('📝 Haciendo click en "Designación de Jurados"...');
   await designacionJuradosBtn.click();
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   await page.waitForLoadState('networkidle');
   
   // ========== PASO 3: DESIGNAR JURADO OBJETANTE ==========
@@ -81,19 +81,19 @@ test('PAISI - Designar Jurado Objetante', async ({ page }) => {
   await juradoSelect.waitFor({ state: 'visible', timeout: 5000 });
   
   // Esperar a que el select esté habilitado
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(500);
   
   // Seleccionar por label (texto visible)
   await juradoSelect.selectOption({ label: 'EDGARDO CRISTIAM IVAN LOPEZ DE LA CRUZ' });
   console.log('✅ Jurado objetante seleccionado');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // Llenar número de expediente
   console.log('📄 Llenando número de expediente...');
   const expedienteInput = page.getByRole('textbox', { name: 'Digite número de expediente' });
   await expedienteInput.waitFor({ state: 'visible', timeout: 5000 });
   await expedienteInput.fill(env.EXPEDIENTE_JURADO);
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   
   // Tomar screenshot antes de designar
   console.log('📸 Tomando screenshot antes de designar jurado...');
@@ -107,12 +107,11 @@ test('PAISI - Designar Jurado Objetante', async ({ page }) => {
   
   // Confirmar designación
   console.log('✅ Confirmando designación de jurado...');
-  await page.waitForTimeout(500);
   await page.getByRole('button', { name: 'Sí, Designar' }).click();
   
   // Aceptar confirmación final
   console.log('✅ Aceptando confirmación final...');
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(300);
   await page.getByRole('button', { name: 'Perfecto' }).click();
   
   console.log('🎉 ¡TEST COMPLETADO EXITOSAMENTE!');

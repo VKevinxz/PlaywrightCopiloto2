@@ -38,6 +38,9 @@ module.exports = defineConfig({
     /* URL base para usar en tus tests con await page.goto('/') */
     baseURL: process.env.BASE_URL || 'http://localhost:5173',
     
+    /* Resolución de pantalla para todos los tests */
+    viewport: { width: 1920, height: 1080 },
+    
     /* Captura screenshot solo cuando falla */
     screenshot: 'only-on-failure',
     
@@ -61,17 +64,26 @@ module.exports = defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { 
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1920, height: 1080 }
+      },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { 
+        ...devices['Desktop Firefox'],
+        viewport: { width: 1920, height: 1080 }
+      },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { 
+        ...devices['Desktop Safari'],
+        viewport: { width: 1920, height: 1080 }
+      },
     },
 
     /* Test against mobile viewports. */
