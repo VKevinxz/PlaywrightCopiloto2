@@ -76,7 +76,7 @@ test('PAISI - Designar Jurado Objetante', async ({ page }) => {
   await filaRow.waitFor({ state: 'visible', timeout: 10000 });
   
   // Seleccionar jurado objetante por nombre
-  console.log('👨‍⚖️ Seleccionando jurado objetante "EDGARDO CRISTIAM IVAN LOPEZ DE LA CRUZ"...');
+  console.log(`👨‍⚖️ Seleccionando jurado objetante "${env.JURADO_NOMBRE}"...`);
   const juradoSelect = filaRow.getByRole('combobox');
   await juradoSelect.waitFor({ state: 'visible', timeout: 5000 });
   
@@ -84,7 +84,7 @@ test('PAISI - Designar Jurado Objetante', async ({ page }) => {
   await page.waitForTimeout(500);
   
   // Seleccionar por label (texto visible)
-  await juradoSelect.selectOption({ label: 'EDGARDO CRISTIAM IVAN LOPEZ DE LA CRUZ' });
+  await juradoSelect.selectOption({ label: env.JURADO_NOMBRE });
   console.log('✅ Jurado objetante seleccionado');
   await page.waitForTimeout(300);
   

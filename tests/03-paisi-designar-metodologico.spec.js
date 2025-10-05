@@ -95,7 +95,7 @@ test('PAISI - Designar Asesor Metodológico', async ({ page }) => {
   await filaRow.waitFor({ state: 'visible', timeout: 10000 });
   
   // Seleccionar asesor metodológico por nombre
-  console.log('👨‍🏫 Seleccionando asesor metodológico "JOSE LEONARDO TOL CER"...');
+  console.log(`👨‍🏫 Seleccionando asesor metodológico "${env.REVISOR_METODOLOGICO_NOMBRE}"...`);
   const asesorMetodologicoSelect = filaRow.getByRole('combobox');
   await asesorMetodologicoSelect.waitFor({ state: 'visible', timeout: 5000 });
   
@@ -103,7 +103,7 @@ test('PAISI - Designar Asesor Metodológico', async ({ page }) => {
   await page.waitForTimeout(500);
   
   // Seleccionar por label (texto visible)
-  await asesorMetodologicoSelect.selectOption({ label: 'JOSE LEONARDO TOL CER' });
+  await asesorMetodologicoSelect.selectOption({ label: env.REVISOR_METODOLOGICO_NOMBRE });
   console.log('✅ Asesor metodológico seleccionado');
   await page.waitForTimeout(300);
   
