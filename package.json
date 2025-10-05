@@ -1,0 +1,25 @@
+{
+  "name": "playwright-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:ui": "npx playwright test --ui",
+    "test:google": "npx playwright test google-auth-natural.spec.js --headed --project=chromium",
+    "test:google:slow": "npx playwright test google-auth-natural.spec.js --headed --project=chromium --slowMo=1000",
+    "test:report": "npx playwright show-report",
+    "test:flow": "npx playwright test tests/1-tesista-solicitud.spec.js tests/2-revisor-aceptar.spec.js tests/3-paisi-designar-metodologico.spec.js tests/4-facultad-emitir-resolucion.spec.js tests/5-tesista-solicitar-revision-plan.spec.js tests/6-revisor-aprobar-plan.spec.js tests/7-revisor-metodologico-aprobar-plan.spec.js tests/8-tesista-solicitar-jurado.spec.js tests/9-paisi-designar-jurado.spec.js tests/10-facultad-emitir-resolucion-jurado.spec.js --headed --project=chromium --workers=1",
+    "test:flow:headless": "npx playwright test tests/1-tesista-solicitud.spec.js tests/2-revisor-aceptar.spec.js tests/3-paisi-designar-metodologico.spec.js tests/4-facultad-emitir-resolucion.spec.js tests/5-tesista-solicitar-revision-plan.spec.js tests/6-revisor-aprobar-plan.spec.js tests/7-revisor-metodologico-aprobar-plan.spec.js tests/8-tesista-solicitar-jurado.spec.js tests/9-paisi-designar-jurado.spec.js tests/10-facultad-emitir-resolucion-jurado.spec.js --project=chromium --workers=1",
+    "codegen": "npx playwright codegen http://localhost:5173"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.55.1",
+    "dotenv": "^17.2.3"
+  }
+}

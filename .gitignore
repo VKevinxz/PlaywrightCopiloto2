@@ -1,0 +1,26 @@
+# Node modules
+node_modules/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# Environment variables (CRÍTICO - NO SUBIR)
+.env
+
+# Screenshots de tests
+tests/screenshots/
+
+# Archivos de firmas (datos sensibles)
+test-data/firmas/*.png
+test-data/firmas/*.jpg
+test-data/firmas/*.jpeg
+
+# Logs
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
